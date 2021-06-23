@@ -10,6 +10,8 @@ import com.dicoding.auliarosyida.moviesapp.core.data.source.remotesource.RemoteM
 import com.dicoding.auliarosyida.moviesapp.core.data.source.remotesource.network.ApiService
 import com.dicoding.auliarosyida.moviesapp.core.domain.repository.InterfaceMovieRepository
 import com.dicoding.auliarosyida.moviesapp.core.utils.AppThreadExecutors
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -19,12 +21,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 val databaseModule = module {
+    val passphrase: ByteArray = SQLiteDatabase.getBytes("dicodingByAR".toCharArray())
+    val factory = SupportFactory(passphrase)
     factory { get<MovieBuilderDatabase>().movieDao() }
     single {
         Room.databaseBuilder(
             androidContext(),
             MovieBuilderDatabase::class.java, "Movies.db"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration()
+            .openHelperFactory(factory)
+            .build()
     }
 }
 

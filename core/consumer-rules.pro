@@ -10,7 +10,9 @@
 # keep : mempertahankan suatu class supaya tidak ikut ter-obfuscate.
 # Modifier includedescriptorclasses digunakan supaya fungsi dan field yang ada di dalam class tersebut
 # juga dipertahankan.
+#noinspection ShrinkerUnresolvedReference
 -keep,includedescriptorclasses class net.sqlcipher.** { *; }
+#noinspection ShrinkerUnresolvedReference
 -keep,includedescriptorclasses interface net.sqlcipher.** { *; }
 
 
@@ -32,6 +34,7 @@
 #-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
+#noinspection ShrinkerUnresolvedReference
 -keep class com.google.gson.examples.android.model.** { <fields>; }
 
 # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,

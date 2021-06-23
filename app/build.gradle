@@ -77,4 +77,7 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
     testImplementation "androidx.arch.core:core-testing:$androidCoreTestVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
+
+    // Menerapkan LeakCanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 }

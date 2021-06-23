@@ -12,6 +12,7 @@ import com.dicoding.auliarosyida.moviesapp.core.domain.repository.InterfaceMovie
 import com.dicoding.auliarosyida.moviesapp.core.utils.AppThreadExecutors
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -21,25 +22,32 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 val databaseModule = module {
-    val passphrase: ByteArray = SQLiteDatabase.getBytes("dicodingByAR".toCharArray())
-    val factory = SupportFactory(passphrase)
+    val passwordphrase: ByteArray = SQLiteDatabase.getBytes("dicodingByAR".toCharArray())
+    val supportFactory = SupportFactory(passwordphrase)
     factory { get<MovieBuilderDatabase>().movieDao() }
     single {
         Room.databaseBuilder(
             androidContext(),
             MovieBuilderDatabase::class.java, "Movies.db"
         ).fallbackToDestructiveMigration()
-            .openHelperFactory(factory)
+            .openHelperFactory(supportFactory)
             .build()
     }
 }
 
 val networkModule = module {
     single {
+        val hostlink = "api.themoviedb.org"
+        val certifPinner = CertificatePinner.Builder()
+            .add(hostlink, "sha256/+vqZVAzTqUP8BGkfl88yU7SQ3C8J2uNEa55B7RZjEg0=")
+            .add(hostlink, "sha256/JSMzqOOrtyOT1kmau6zKhgT676hGgczD5VMdRMyJZFA=")
+            .add(hostlink, "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=")
+            .build()
         OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
+            .certificatePinner(certifPinner)
             .build()
     }
     single {

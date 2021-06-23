@@ -40,7 +40,7 @@ class MovieFragment : Fragment() {
                 startActivity(intent)
             }
             movieFragmentBinding.progressbarMovie.visibility = View.VISIBLE
-            movieViewModel.movie.observe(this, { movies ->
+            movieViewModel.movie.observe(viewLifecycleOwner, { movies ->
                 if (movies != null) {
                     when (movies) {
                         is StatusData.Loading -> movieFragmentBinding.progressbarMovie.visibility = View.VISIBLE

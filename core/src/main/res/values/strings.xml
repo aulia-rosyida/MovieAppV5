@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="image_description">Image</string>
-    <string name="text_primary">Sample of title text</string>
-    <string name="text_subtitle">Sample of subtitle text</string>
     <string name="title">Title</string>
     <string name="release_year">Release Year</string>
     <string name="quote">Quote</string>
